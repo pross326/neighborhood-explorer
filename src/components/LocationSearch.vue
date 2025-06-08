@@ -10,6 +10,7 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
+import loadGoogleMapsApi from '/src/utils/loadGoogleMaps.js'
 
 const location = ref('')
 const emit = defineEmits(['results'])
@@ -19,7 +20,10 @@ const submitLocation = async () => {
     if (!location.value) return
 
     loading.value = true
+
     try {
+        await loadGoogleMapsApi()
+
         const response = await axios.get('/.netlify/functions/places', {
             params: {
                 location: location.value,
